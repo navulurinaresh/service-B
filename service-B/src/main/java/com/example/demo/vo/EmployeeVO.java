@@ -1,9 +1,6 @@
 package com.example.demo.vo;
 
-import lombok.Getter;
-import lombok.Setter;
-
-public class Employee {
+public class EmployeeVO {
     private int id;
     private String name;
     private int age;

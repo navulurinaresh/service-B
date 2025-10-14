@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
-@Entity
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +48,7 @@ public class Employee {
     }
 
     public void setSalary(int salary) {
-        this.salary = salary;
+       salary = salary;
     }
 
     public String getGender() {

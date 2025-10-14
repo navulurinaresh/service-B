@@ -49,7 +49,7 @@ public class Employee {
     }
 
     public void setSalary(int salary) {
-       salary = salary;
+        this.salary = salary;
     }
 
     public String getGender() {

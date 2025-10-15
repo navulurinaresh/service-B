@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Employee;
+import com.example.demo.exception.EmployeeNotFoundException;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.vo.EmployeeVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,6 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     public List<EmployeeVO> getEmployees() {
-        if(Math.random()>0.5){
-            throw new RuntimeException();
-        }
         Iterable<Employee> list = employeeRepository.findAll(Sort.by("id"));
         List<Employee> res=new ArrayList<>();
         list.forEach(emp->res.add(emp));
@@ -67,5 +65,18 @@ public class EmployeeService {
         emp.setSalary(employee.getSalary());
         emp.setGender(employee.getGender());
         return emp;
+    }
+
+    public EmployeeVO updateEmployee(int id, EmployeeVO employeeVO) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
+        
+        employee.setName(employeeVO.getName());
+        employee.setAge(employeeVO.getAge());
+        employee.setSalary(employeeVO.getSalary());
+        employee.setGender(employeeVO.getGender());
+        
+        Employee updatedEmployee = employeeRepository.save(employee);
+        return getEmployeeVO(updatedEmployee);
     }
 }

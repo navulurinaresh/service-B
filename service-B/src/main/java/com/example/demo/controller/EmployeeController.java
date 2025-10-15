@@ -16,9 +16,9 @@ public class EmployeeController {
     @Autowired
     private EmployeeService service;
 
-    @GetMapping("/greet/{name}")
-    public String getMessage(@PathVariable String name){
-        return "Hello "+name;
+    @GetMapping("/greet/{firstName}/{lastName}")
+    public String getMessage(@PathVariable String firstName, @PathVariable String lastName){
+        return "Hello "+firstName+" "+lastName;
     }
 
     @GetMapping("/employees")

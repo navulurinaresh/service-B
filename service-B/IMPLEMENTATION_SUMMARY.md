@@ -5,22 +5,28 @@ Successfully implemented a new service to update employee records in the Employe
 
 ## Changes Made
 
-### 1. Service Layer (`EmployeeService.java`)
+### 1. Exception Handling
+Created custom exception handling:
+- **EmployeeNotFoundException** - Custom exception for employee not found scenarios
+- **ErrorResponse** - Structured error response model with timestamp, status, error, message, and path
+- **GlobalExceptionHandler** - @ControllerAdvice handler that maps EmployeeNotFoundException to HTTP 404
+
+### 2. Service Layer (`EmployeeService.java`)
 Added new `updateEmployee` method:
 - Takes employee ID and EmployeeVO as parameters
 - Fetches existing employee from database
 - Updates all fields (name, age, salary, gender)
 - Returns updated employee as EmployeeVO
-- Throws RuntimeException if employee not found
+- Throws EmployeeNotFoundException if employee not found (returns HTTP 404)
 
-### 2. Controller Layer (`EmployeeController.java`)
+### 3. Controller Layer (`EmployeeController.java`)
 Added new PUT endpoint:
 - Endpoint: `PUT /employee/update/{id}`
 - Accepts employee ID as path variable
 - Accepts EmployeeVO in request body
 - Returns updated EmployeeVO
 
-### 3. Test Coverage
+### 4. Test Coverage
 Created comprehensive test suites:
 
 #### EmployeeServiceTest.java (6 test cases)
@@ -31,11 +37,12 @@ Created comprehensive test suites:
 - `testUpdateEmployee_UpdateOnlyName` - Test single field update (name)
 - `testUpdateEmployee_UpdateOnlySalary` - Test single field update (salary)
 
-#### EmployeeControllerTest.java (2 test cases)
+#### EmployeeControllerTest.java (3 test cases)
 - `testUpdateEmployee_Success` - Integration test for successful update
 - `testUpdateEmployee_WithAllFields` - Test updating all fields
+- `testUpdateEmployee_NotFound` - Test 404 error when employee not found
 
-### 4. Configuration Changes
+### 5. Configuration Changes
 - Updated `build.gradle` to use Java 21 (compatible with available JDK)
 
 ---
@@ -88,13 +95,13 @@ Content-Type: application/json
 
 **Response:**
 ```http
-HTTP/1.1 500 Internal Server Error
+HTTP/1.1 404 Not Found
 Content-Type: application/json
 
 {
   "timestamp": "2025-10-15T04:55:00.000+00:00",
-  "status": 500,
-  "error": "Internal Server Error",
+  "status": 404,
+  "error": "Not Found",
   "message": "Employee not found with id: 999",
   "path": "/employee/update/999"
 }
@@ -120,14 +127,14 @@ curl -X PUT http://localhost:8080/employee/update/1 \
 All tests passed successfully:
 ```
 BUILD SUCCESSFUL in 8s
-4 actionable tasks: 2 executed, 2 up-to-date
+4 actionable tasks: 3 executed, 1 up-to-date
 
 Test Summary:
 - EmployeeServiceTest: 6/6 tests passed ✓
-- EmployeeControllerTest: 2/2 tests passed ✓
+- EmployeeControllerTest: 3/3 tests passed ✓
 - DemoApplicationTests: 1/1 test passed ✓
 
-Total: 9/9 tests passed
+Total: 10/10 tests passed
 ```
 
 ---
@@ -138,9 +145,12 @@ Total: 9/9 tests passed
 3. `service-B/build.gradle`
 
 ## Files Created
-1. `service-B/src/test/java/com/example/demo/service/EmployeeServiceTest.java`
-2. `service-B/src/test/java/com/example/demo/controller/EmployeeControllerTest.java`
-3. `service-B/API_DOCUMENTATION.md`
+1. `service-B/src/main/java/com/example/demo/exception/EmployeeNotFoundException.java`
+2. `service-B/src/main/java/com/example/demo/exception/ErrorResponse.java`
+3. `service-B/src/main/java/com/example/demo/exception/GlobalExceptionHandler.java`
+4. `service-B/src/test/java/com/example/demo/service/EmployeeServiceTest.java`
+5. `service-B/src/test/java/com/example/demo/controller/EmployeeControllerTest.java`
+6. `service-B/API_DOCUMENTATION.md`
 
 ---
 
@@ -162,8 +172,9 @@ Comprehensive API documentation has been created in `API_DOCUMENTATION.md` with:
 The implementation is complete with:
 ✅ Update employee service method in EmployeeService
 ✅ PUT endpoint in EmployeeController
-✅ Comprehensive test coverage (9 tests, all passing)
-✅ Complete API documentation
+✅ Custom exception handling with proper HTTP status codes (404 for not found)
+✅ Comprehensive test coverage (10 tests, all passing)
+✅ Complete API documentation with correct error responses
 ✅ Sample request/response formats provided
 
 Please review the changes and provide feedback.

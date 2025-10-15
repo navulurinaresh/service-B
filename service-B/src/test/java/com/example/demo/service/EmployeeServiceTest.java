@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Employee;
+import com.example.demo.exception.EmployeeNotFoundException;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.vo.EmployeeVO;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +73,7 @@ class EmployeeServiceTest {
         when(employeeRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         // When & Then
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        EmployeeNotFoundException exception = assertThrows(EmployeeNotFoundException.class, () -> {
             employeeService.updateEmployee(999, testEmployeeVO);
         });
 

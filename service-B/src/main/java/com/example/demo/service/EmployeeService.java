@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Employee;
+import com.example.demo.exception.EmployeeNotFoundException;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.vo.EmployeeVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,7 @@ public class EmployeeService {
 
     public EmployeeVO updateEmployee(int id, EmployeeVO employeeVO) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
         
         employee.setName(employeeVO.getName());
         employee.setAge(employeeVO.getAge());

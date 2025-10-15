@@ -75,7 +75,7 @@ Content-Type: application/json
 
 ### Employee Not Found
 
-**Status Code:** `500 Internal Server Error`
+**Status Code:** `404 Not Found`
 
 **Sample Request:**
 ```
@@ -96,8 +96,8 @@ PUT http://localhost:8080/employee/update/999
 ```json
 {
   "timestamp": "2025-10-15T10:30:00.000+00:00",
-  "status": 500,
-  "error": "Internal Server Error",
+  "status": 404,
+  "error": "Not Found",
   "message": "Employee not found with id: 999",
   "path": "/employee/update/999"
 }

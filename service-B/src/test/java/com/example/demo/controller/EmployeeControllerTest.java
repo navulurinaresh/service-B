@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.EmployeeNotFoundException;
 import com.example.demo.service.EmployeeService;
 import com.example.demo.vo.EmployeeVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,5 +91,27 @@ class EmployeeControllerTest {
                 .andExpect(jsonPath("$.age").value(35))
                 .andExpect(jsonPath("$.salary").value(70000))
                 .andExpect(jsonPath("$.gender").value("Female"));
+    }
+
+    @Test
+    void testUpdateEmployee_NotFound() throws Exception {
+        // Given
+        EmployeeVO updateRequest = new EmployeeVO();
+        updateRequest.setName("Non Existent");
+        updateRequest.setAge(25);
+        updateRequest.setSalary(40000);
+        updateRequest.setGender("Male");
+
+        when(employeeService.updateEmployee(eq(999), any(EmployeeVO.class)))
+                .thenThrow(new EmployeeNotFoundException("Employee not found with id: 999"));
+
+        // When & Then
+        mockMvc.perform(put("/employee/update/999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.error").value("Not Found"))
+                .andExpect(jsonPath("$.message").value("Employee not found with id: 999"));
     }
 }

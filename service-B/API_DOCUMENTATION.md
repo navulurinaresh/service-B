@@ -219,7 +219,7 @@ curl -X PUT http://localhost:8080/employee/update/5 \
 
 1. All fields in the request body are required even if you only want to update one field
 2. The `id` field in the request body is ignored; the ID from the URL path is used
-3. If the employee with the specified ID doesn't exist, a 500 error is returned
+3. If the employee with the specified ID doesn't exist, a 404 Not Found error is returned
 4. All numeric fields (age, salary) must be valid integers
 5. The response includes all employee fields including the ID
 

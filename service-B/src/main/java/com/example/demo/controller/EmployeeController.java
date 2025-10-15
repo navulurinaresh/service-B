@@ -36,4 +36,9 @@ public class EmployeeController {
         Pageable pageableWithSort = PageRequest.of(pageNumber, pageSize, Sort.by("id").descending());
         return service.getEmployees(pageableWithSort);
     }
+
+    @PutMapping("/employee/update/{id}")
+    public EmployeeVO updateEmployee(@PathVariable int id, @RequestBody EmployeeVO employeeVO){
+        return service.updateEmployee(id, employeeVO);
+    }
 };

@@ -68,4 +68,17 @@ public class EmployeeService {
         emp.setGender(employee.getGender());
         return emp;
     }
+
+    public EmployeeVO updateEmployee(int id, EmployeeVO employeeVO) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
+        
+        employee.setName(employeeVO.getName());
+        employee.setAge(employeeVO.getAge());
+        employee.setSalary(employeeVO.getSalary());
+        employee.setGender(employeeVO.getGender());
+        
+        Employee updatedEmployee = employeeRepository.save(employee);
+        return getEmployeeVO(updatedEmployee);
+    }
 }

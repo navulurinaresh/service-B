@@ -20,9 +20,6 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     public List<EmployeeVO> getEmployees() {
-        if(Math.random()>0.5){
-            throw new RuntimeException();
-        }
         Iterable<Employee> list = employeeRepository.findAll(Sort.by("id"));
         List<Employee> res=new ArrayList<>();
         list.forEach(emp->res.add(emp));
